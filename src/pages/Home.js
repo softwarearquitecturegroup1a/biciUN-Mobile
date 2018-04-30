@@ -9,13 +9,15 @@ import {Actions} from 'react-native-router-flux';
 var serial = 1234;
 var color = 'Verde';
 
+global.userId = 106358778;
+
 export default class Home extends React.Component {
 
   constructor(props, context) {
     super(props, context);
       this.state = {
         isDisabled: false,
-        user: 989615823
+        user: 105426021
       }
   }
 

@@ -3,6 +3,8 @@ import React from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import graphql from '../utils/graphQLUtils';
 
+
+
 export default class Header extends React.Component {
 
   constructor(props) {
@@ -14,10 +16,11 @@ export default class Header extends React.Component {
 
   componentDidMount() {
     var request = `query {
-      userById(id: 989615823) {
+      userById(id: ${userId}) {
         name
         lastname
         email
+        id
       }
     }`;
 
@@ -56,7 +59,7 @@ export default class Header extends React.Component {
         <Text style={styles.text}> Perfil de Usuario</Text>
 
         <View style={styles.profilePhotoS}>
-          <Image style={styles.profilePhoto} source={require('../images/Rene_Higuita.jpg')}></Image>
+          <Image style={styles.profilePhoto} source={require('../images/photo.jpg')}></Image>
         </View>
 
         <Text style={styles.lastname}>{this.state.dataSource.lastname}</Text>

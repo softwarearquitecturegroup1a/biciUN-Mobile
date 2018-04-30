@@ -6,7 +6,7 @@ export default class Records extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Historial</Text>
+        <Text style={styles.text}> Historial de Prestamos</Text>
       </View> 
     );
   }
@@ -19,5 +19,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center", 
+  },
+
+  text: {
+    color: "#ede7f6",
+    fontSize: 25,
+    marginVertical: 20,
   }
 });
