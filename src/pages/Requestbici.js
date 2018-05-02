@@ -1,6 +1,7 @@
 // Importaciones
 import React from 'react';
 import { StyleSheet, Text, View, Picker} from 'react-native';
+import Request_icon from '../components/Request_icon';
 
 import Button from 'react-native-button';
 // import PickerRequest from '../components/PickerRequest';
@@ -9,7 +10,7 @@ export default class Requestbici extends React.Component {
   constructor(props, context) {
     super(props, context);
       this.state = {
-        estacion_origen:"CyT",
+        estacion_origen:"Uriel",
         estacion_destino:"CyT",
         isDisabled: false,
         user: 105426021
@@ -27,15 +28,17 @@ export default class Requestbici extends React.Component {
 
 
   render() {
-    
     const { isDisabled } = this.state;
     return (
       
     <View style={styles.container}>
+      <Request_icon/>
       <Text style={styles.text}>Seleccione Estación Origen</Text>
       <Picker 
         selectedValue={this.state.estacion_origen}
-        style={{ height: 50, width: 120, color:'#fff' }}
+
+        style={styles.picker}
+        underlineColorAndroid='rgba(0,0,0,0)'
         onValueChange={(itemValue, itemIndex) => this.setState({estacion_origen: itemValue})} 
         >
         <Picker.Item label="Central" value="Central" />
@@ -49,7 +52,7 @@ export default class Requestbici extends React.Component {
       <Text style={styles.text}>Seleccione Estación Destino</Text>
       <Picker
         selectedValue={this.state.estacion_destino}
-        style={{ height: 50, width: 120, color:'#fff' }}
+        style={ styles.picker}
         onValueChange={(itemValue, itemIndex) => this.setState({estacion_destino: itemValue})}
         >
         <Picker.Item label="Central" value="Central" />
@@ -59,16 +62,16 @@ export default class Requestbici extends React.Component {
         <Picker.Item label="Capilla" value="Capilla" />
         <Picker.Item label="Humanas" value="Humanas" />
       </Picker>
-      
+      <Text></Text>
       <Button
-        style={{ fontSize: 20, color: 'white' }}
+        style={{ flex: 3,fontSize: 18, color: 'white' }}
         styleDisabled={{ color: 'white' }}
         disabled={isDisabled}
-        containerStyle={{ padding: 8, height: 45, width: 380, overflow: 'hidden', borderRadius: 10, 
+        containerStyle={{ padding: 8, height: 45, width: 150, overflow: 'hidden', borderRadius: 10, 
           borderWidth: 1, borderColor: '#fff', backgroundColor: '#06A800' }}
         disabledContainerStyle={{ backgroundColor: '#db143f' }}
         onPress={() => this._handlePress()}
-        >Solicitar
+        >Solicitar Bici
       </Button>
     </View>
     );
@@ -86,10 +89,20 @@ const styles = StyleSheet.create({
 
   text: {
     color: "#fff",
-    fontSize: 22,
-    marginVertical: 20,
+    fontSize: 14,
+    marginVertical: 8,
   },
   picker:{
-    color: "#fff"
+    color: "#fff",
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    width:300,
+    color:'#fff',
+    borderRadius: 10, 
+    borderWidth: 1, 
+    borderColor: '#fff', 
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 10,
   }
 });

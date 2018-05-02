@@ -5,6 +5,8 @@ import graphql from '../utils/graphQLUtils';
 
 
 
+global.userToken = "InrHZA4SgT";
+
 export default class Header extends React.Component {
 
   constructor(props) {
