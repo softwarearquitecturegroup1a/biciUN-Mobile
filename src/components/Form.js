@@ -47,6 +47,7 @@ export default class Form extends React.Component {
             if (data) {
                 console.log(data.auth.token);
                 global.userToken = data.auth.token;
+                global.userId = user;
                 Actions.home();
             }
             else {
