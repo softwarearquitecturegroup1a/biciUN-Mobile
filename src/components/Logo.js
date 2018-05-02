@@ -7,7 +7,7 @@ export default class Logo extends React.Component {
 		return(
 			<View style={styles.container}>
 				<Image source={require('../images/Logo.png')}></Image>
-				<Text style={styles.logoText}>Bienvenido a BiciUn</Text>
+				<Text style={styles.logoText}>Bienvenido a BiciUN</Text>
 			</View>	
 		)
 	}
