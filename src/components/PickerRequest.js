@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Picker, StyleSheet } from 'react-native'
 import {Header} from './Header.js';
-
+import graphql from '../utils/graphQLUtils';
 
 export default class PickerRequest extends Component {
 
@@ -10,6 +10,35 @@ export default class PickerRequest extends Component {
       this.state = {
         language: "python",
       }
+  }
+  componentDidMount() {
+
+    var requestPrestamo = `
+    mutation {
+      createPrestamo(token: "TbPJpoT6Pc", prestamo:{
+        bici_id:123
+      }) {
+        id
+        student_id
+        bici_id
+        solicitud
+        entrega
+      }
+    }
+    `;
+
+    graphqlprestamo(  
+      request,
+      (data) => {
+        this.setState({
+          isLoading: false,
+          dataSource: data.createPrestamo,
+        })
+      },
+      (status, data) => {
+      }
+    );
+
   }
    render() {
      

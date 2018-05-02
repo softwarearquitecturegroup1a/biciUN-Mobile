@@ -1,26 +1,24 @@
 // Importaciones
 import React from 'react';
-import { StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, Picker} from 'react-native';
 
 import Button from 'react-native-button';
-import PickerRequest from '../components/PickerRequest';
+// import PickerRequest from '../components/PickerRequest';
 export default class Requestbici extends React.Component {
-
-
 
   constructor(props, context) {
     super(props, context);
       this.state = {
+        estacion_origen:"CyT",
+        estacion_destino:"CyT",
         isDisabled: false,
         user: 105426021
       }
   }
 
-
   _handlePress() {
     this.requestbici();
-    console.log('Boton Solicitar, funcionando');
-    
+    console.log('Boton Solicitar, funcionando');    
   }  
   
   requestbici(){
@@ -29,12 +27,38 @@ export default class Requestbici extends React.Component {
 
 
   render() {
+    
+    const { isDisabled } = this.state;
     return (
       
     <View style={styles.container}>
-      <PickerRequest/>
-      
-      <PickerRequest/>
+      <Text style={styles.text}>Seleccione Estación Origen</Text>
+      <Picker 
+        selectedValue={this.state.estacion_origen}
+        style={{ height: 50, width: 120, color:'#fff' }}
+        onValueChange={(itemValue, itemIndex) => this.setState({estacion_origen: itemValue})} 
+        >
+        <Picker.Item label="Central" value="Central" />
+        <Picker.Item label="Uriel" value="Uriel" />
+        <Picker.Item label="CyT" value="CyT" />
+        <Picker.Item label="Estadio" value="Estadio" />
+        <Picker.Item label="Capilla" value="Capilla" />
+        <Picker.Item label="Humanas" value="Humanas" />
+      </Picker>
+
+      <Text style={styles.text}>Seleccione Estación Destino</Text>
+      <Picker
+        selectedValue={this.state.estacion_destino}
+        style={{ height: 50, width: 120, color:'#fff' }}
+        onValueChange={(itemValue, itemIndex) => this.setState({estacion_destino: itemValue})}
+        >
+        <Picker.Item label="Central" value="Central" />
+        <Picker.Item label="Uriel" value="Uriel" />
+        <Picker.Item label="CyT" value="CyT" />
+        <Picker.Item label="Estadio" value="Estadio" />
+        <Picker.Item label="Capilla" value="Capilla" />
+        <Picker.Item label="Humanas" value="Humanas" />
+      </Picker>
       
       <Button
         style={{ fontSize: 20, color: 'white' }}
@@ -61,8 +85,11 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: "#ede7f6",
-    fontSize: 25,
+    color: "#fff",
+    fontSize: 22,
     marginVertical: 20,
+  },
+  picker:{
+    color: "#fff"
   }
 });
