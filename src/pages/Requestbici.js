@@ -33,7 +33,7 @@ export default class Requestbici extends React.Component {
       
     <View style={styles.container}>
       <Request_icon/>
-      <Text style={styles.text}>Seleccione Estación Origen</Text>
+      <Text style={styles.text}>Seleccione su Estación de Inicio</Text>
       <Picker 
         selectedValue={this.state.estacion_origen}
 
@@ -49,7 +49,7 @@ export default class Requestbici extends React.Component {
         <Picker.Item label="Humanas" value="Humanas" />
       </Picker>
 
-      <Text style={styles.text}>Seleccione Estación Destino</Text>
+      <Text style={styles.text}>Seleccione su Estación de Destino</Text>
       <Picker
         selectedValue={this.state.estacion_destino}
         style={ styles.picker}
@@ -94,9 +94,8 @@ const styles = StyleSheet.create({
   },
   picker:{
     color: "#fff",
-    justifyContent: 'center',
     alignItems: 'center',
-    height: 50,
+    height: 30,
     width:300,
     color:'#fff',
     borderRadius: 10, 

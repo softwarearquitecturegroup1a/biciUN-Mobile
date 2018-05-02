@@ -16,12 +16,11 @@ export default class Request_icon extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: 'flex-end',
     alignItems: 'center',
   },
 
   Request_iconText: {
-  	marginVertical: 8,
+  	marginVertical: 10,
     color: "#ede7f6",
     fontSize: 18,
     textAlign: 'center',
