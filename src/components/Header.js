@@ -35,6 +35,33 @@ export default class Header extends React.Component {
       (status, data) => {
       }
     );
+
+    var requestPrestamo = `
+    mutation {
+      createPrestamo(token: "TbPJpoT6Pc", prestamo:{
+        bici_id:123
+      }) {
+        id
+        student_id
+        bici_id
+        solicitud
+        entrega
+      }
+    }
+    `;
+
+    graphqlprestamo(  
+      request,
+      (data) => {
+        this.setState({
+          isLoading: false,
+          dataSource: data.userById,
+        })
+      },
+      (status, data) => {
+      }
+    );
+
   }
 
 
