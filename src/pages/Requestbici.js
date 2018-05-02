@@ -29,7 +29,18 @@ export default class Requestbici extends React.Component {
 
   render() {
     const { isDisabled } = this.state;
+
+    var estaciones = ["Probando", "uno"];
+    var estacion = [];
+
+    for(let i = 0; i < estaciones; i++){
+  
+      estacion.push(
+        <Picker.Item value = {i}/>
+      )
+    }
     return (
+
       
     <View style={styles.container}>
       <Request_icon/>
@@ -41,6 +52,7 @@ export default class Requestbici extends React.Component {
         underlineColorAndroid='rgba(0,0,0,0)'
         onValueChange={(itemValue, itemIndex) => this.setState({estacion_origen: itemValue})} 
         >
+        { estacion }
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
         <Picker.Item label="CyT" value="CyT" />
@@ -100,7 +112,6 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
     borderColor: '#fff', 
     backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingHorizontal: 10,
-    textAlign:"center"
+    paddingHorizontal: 10
   }
 });
