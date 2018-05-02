@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 
   container: {
     backgroundColor: "#3949ab",
-    flex: 1,
+    flexGrow: 1,
     alignItems: "center",
     justifyContent: "center", 
   },
@@ -93,8 +93,6 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   picker:{
-    color: "#fff",
-    alignItems: 'center',
     height: 30,
     width:300,
     color:'#fff',
@@ -103,5 +101,6 @@ const styles = StyleSheet.create({
     borderColor: '#fff', 
     backgroundColor: 'rgba(255,255,255,0.2)',
     paddingHorizontal: 10,
+    textAlign:"center"
   }
 });
