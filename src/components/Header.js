@@ -16,7 +16,7 @@ export default class Header extends React.Component {
 
   componentDidMount() {
     var request = `query {
-      userById(id: ${userId}) {
+      userById(token: "${userToken}") {
         name
         lastname
         email

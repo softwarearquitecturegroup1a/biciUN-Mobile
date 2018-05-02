@@ -9,7 +9,7 @@ import {Actions} from 'react-native-router-flux';
 var serial = 1234;
 var color = 'Verde';
 
-global.userId = 106358778;
+global.userToken = "InrHZA4SgT";
 
 export default class Home extends React.Component {
 
