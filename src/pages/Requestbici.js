@@ -73,6 +73,7 @@ export default class Requestbici extends React.Component {
     
     const origen = this.state.estacion_origen;
     const final = this.state.estacion_destino;
+    const disponibles = this.state.bicicletasOrigen
     if (origen === final) {
       this.setState({ finalError: "Cambia las estaciones!" })
       
