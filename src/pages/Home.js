@@ -6,9 +6,6 @@ import BiciLogo from '../components/BiciLogo';
 
 import {Actions} from 'react-native-router-flux';
 
-var serial = 1234;
-var color = 'Verde';
-
 global.userToken = "InrHZA4SgT";
 
 export default class Home extends React.Component {
@@ -21,7 +18,6 @@ export default class Home extends React.Component {
       }
   }
 
-    
   _handlePress() {
     this.requestbici();
     console.log('Boton Solicitar, funcionando');
