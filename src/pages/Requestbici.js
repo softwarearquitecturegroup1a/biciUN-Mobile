@@ -11,7 +11,7 @@ export default class Requestbici extends React.Component {
   constructor(props, context) {
     super(props, context);
       this.state = {
-        estacion_origen:"Uriel",
+        estacion_origen:"CyT",
         estacion_destino:"CyT",
         isDisabled: false,
         user: 105426021,
@@ -89,7 +89,6 @@ export default class Requestbici extends React.Component {
       }
     );
     console.log(this.state.bicicleta)
-    console.log(this.state.bicicleta.estado)
 
     var bicid = 123
 
