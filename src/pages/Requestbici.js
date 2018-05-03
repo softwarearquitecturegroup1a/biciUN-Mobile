@@ -15,6 +15,7 @@ export default class Requestbici extends React.Component {
         estacion_destino:"CyT",
         isDisabled: false,
         user: 105426021,
+        bicicletasOrigen: null
       }
   }
 
@@ -22,10 +23,45 @@ export default class Requestbici extends React.Component {
      //this.requestbici();
      console.log('Boton Solicitar bici, funcionando');  
     //    console.log("paso "+bicid);    
+   
+    const origen = this.state.estacion_origen;
+    var request = `
+    {
+      estacionByName(token: "${userToken}", name: "${origen}"){
+        serial
+        marca
+        estado
+      }
+    }`;
+
+    graphql(request,
+      data => {
+        var msg;
+        if (!data.estacionByName) {
+          msg = "No hay bicicletas disponibles en esta estación"
+        }
+
+        var bicisDisponibles = []
+        data.estacionByName.forEach(bici => {
+          if (bici.estado === "Disponible") {
+            bicisDisponibles.push(bici)
+          }
+        })
+
+        if (bicisDisponibles.length < 1) {
+          msg = "No hay bicicletas disponibles en esta estación"
+        }
+
+        this.setState({ origen: origen, origenError: msg, bicicletasOrigen: bicisDisponibles })
+      }
+    );
+
     this.componentDidMount();
+
+
     Alert.alert(
-      'Disfruta tu viaje',
-      'Bicicleta - Serial: ' + 123,
+      'Disfruta tu viaje, tu bicicleta es:',
+      'Serial No.: ' + 123,
       [
         {
           text: 'Aceptar',
@@ -37,6 +73,16 @@ export default class Requestbici extends React.Component {
     
     const origen = this.state.estacion_origen;
     const final = this.state.estacion_destino;
+    if (origen === final) {
+      this.setState({ finalError: "Cambia las estaciones!" })
+      
+      return
+    }
+    if (!disponibles || disponibles.length < 1) {
+      this.setState({ finalError: "No hay bicicletas disponibles en esta estación" })
+      
+      return
+    }
     var request = `query {
       userById(token: "${userToken}") {
         name
@@ -60,44 +106,45 @@ export default class Requestbici extends React.Component {
     var requestBici = `query{
       estacionByName(token: "${userToken}", name: "${origen}"){
         
-        estado
+        
         serial
+        marca
+        estado
       }
     }`;
-    // graphql(requestBici,
-    //   data => {
-    //     data.estacionByName.map((bicicleta)=>{
-    //       if (bicicleta.estado === "Disponible")
-            
-    //       return this.setState({ bici: bicicleta.serial })
-          
-    //     })
-    //     console.log(this.state.bici)
-    //     AsyncStorage.setItem("bici",this.state.bici)
-    //     console.log(this.state.bici)
-    //   }
-    // );
-    graphql(requestBici,
-      (data) => {
-        this.setState({
-          isLoading: false,
-          bicicleta: data.estacionByName.estado,
+
+    graphql(request,
+      data => {
+        var msg;
+        if (!data.estacionByName) {
+          msg = "No hay bicicletas disponibles en esta estación"
+        }
+
+        var bicisDisponibles = []
+        data.estacionByName.forEach(bici => {
+          if (bici.estado === "Disponible") {
+            bicisDisponibles.push(bici)
+          }
         })
-      
-      },
-      (status, data) => {
+
+        if (bicisDisponibles.length < 1) {
+          msg = "No hay bicicletas disponibles en esta estación"
+        }
+
+        this.setState({ origenError: msg, bicicletasOrigen: bicisDisponibles })
       }
     );
-    console.log(this.state.bicicleta)
+    console.log(this.state)
 
     var bicid = 123
 
     let requestPrestamo = `
     mutation{
       createPrestamo(token: "${userToken}", prestamo:{
-        bici_id: ${bicid}
+        bici_id: ${disponibles[0].serial}
       }){
         id
+        solicitud
       }
     }`;
 
