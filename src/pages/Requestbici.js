@@ -12,7 +12,7 @@ export default class Requestbici extends React.Component {
     super(props, context);
       this.state = {
         estacion_origen:"CyT",
-        estacion_destino:"CyT",
+        estacion_destino:"Uriel",
         isDisabled: false,
         user: 105426021,
         bicicletasOrigen: null
