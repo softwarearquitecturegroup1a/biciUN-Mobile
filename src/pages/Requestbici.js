@@ -15,7 +15,8 @@ export default class Requestbici extends React.Component {
         estacion_destino:"Uriel",
         isDisabled: false,
         user: 105426021,
-        bicicletasOrigen: null
+        bicicletasOrigen: null,
+        bicicletaDestino: null 
       }
   }
 
