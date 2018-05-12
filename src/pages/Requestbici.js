@@ -1,18 +1,9 @@
-// Importaciones
 import React from 'react';
 import { StyleSheet, Text, View, Picker, Alert, AsyncStorage} from 'react-native';
 import Request_icon from '../components/Request_icon';
 import graphql from '../utils/graphQLUtils';
 import Button from 'react-native-button';
 
-class SelectOption extends React.Component{
-  render(){
-    return (
-      <Text/>
-    )
-  }
-
-}
 
 export default class Requestbici extends React.Component {
 
@@ -58,7 +49,7 @@ export default class Requestbici extends React.Component {
 
   }
 
-  handleStartChange(){
+  onValueChangeOrigen(itemValue, itemIndex){
     const origen = event.target.value
     var request = `
     {
@@ -91,7 +82,7 @@ export default class Requestbici extends React.Component {
       }
     );
   }
-  handleEndChange(event){
+  onValueChangeDestino(itemValue, itemIndex){
     this.setState({final: event.target.value});
   }
   async handleSubmitChange(event){
@@ -174,7 +165,7 @@ export default class Requestbici extends React.Component {
         selectedValue={this.state.estacion_origen}
         style={styles.picker}
         underlineColorAndroid='rgba(0,0,0,0)'
-        onValueChange={(itemValue, itemIndex) => this.setState({estacion_origen: itemValue})} >
+        onValueChangeOrigen={(itemValue, itemIndex) => this.setState({estacion_origen: itemValue})} >
         
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
@@ -188,7 +179,7 @@ export default class Requestbici extends React.Component {
       <Picker
         selectedValue={this.state.estacion_destino}
         style={ styles.picker}
-        onValueChange={(itemValue, itemIndex) => this.setState({estacion_destino: itemValue})}>
+        onValueChangeDestino={(itemValue, itemIndex) => this.setState({estacion_destino: itemValue})}>
         
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
