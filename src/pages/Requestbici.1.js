@@ -5,26 +5,20 @@ import Request_icon from '../components/Request_icon';
 import graphql from '../utils/graphQLUtils';
 import Button from 'react-native-button';
 
-class SelectOption extends React.Component{
-  render(){
-    return (
-      <Text/>
-    )
-  }
-
-}
-
 export default class Requestbici extends React.Component {
 
-  constructor(props){
-    super(props);
-    this.state = {
-      origen: 'CyT',
-      final: 'CyT',
-      origenError: '',
-      finalError:'',
-      bicicletasOrigen: null
-    }
+  constructor(props, context) {
+    super(props, context);
+      this.state = {
+        estacion_origen:"CyT",
+        estacion_destino:"Uriel",
+        isDisabled: false,
+        user: 105426021,
+        origenError: '',
+        finalError: '',
+        bicicletasOrigen: null
+      }
+
     var requestget = `
     {
       estacionByName(token: "${this.props.user}", name: "${this.state.origen}"){
@@ -46,23 +40,28 @@ export default class Requestbici extends React.Component {
           if (bici.estado === "Disponible") {
             bicisDisponibles.push(bici)
           }
-        })
+        } 
+        )
 
         if (bicisDisponibles.length < 1) {
-          msg = "No hay bicicletas disponibles en esta estación"
+          msg = "No hay Bicis disponibles en esta estación"
         }
 
-        this.setState({ origenError: msg, bicicletasOrigen: bicisDisponibles })
+        this.setState({origenError: msg, bicicletasOrigen: bicisDisponibles})  
       }
     );
-
   }
 
-  handleStartChange(){
+   _handlePressR(event) {
+     //this.requestbici();
+     console.log('Boton Solicitar bici, funcionando');  
+    //    console.log("paso "+bicid);   
+    //const origen = this.state.estacion_origen;
     const origen = event.target.value
+
     var request = `
     {
-      estacionByName(token: "${this.props.user}", name: "${origen}"){
+      estacionByName(token: "${userToken}", name: "${origen}"){
         serial
         marca
         estado
@@ -90,58 +89,93 @@ export default class Requestbici extends React.Component {
         this.setState({ origen: origen, origenError: msg, bicicletasOrigen: bicisDisponibles })
       }
     );
-  }
-  handleEndChange(event){
-    this.setState({final: event.target.value});
-  }
-  async handleSubmitChange(event){
-    event.preventDefault();
-    const origen = this.state.origen;
-    const final = this.state.final;
-    const disponibles = this.state.bicicletasOrigen
 
-    if (origen == final) {
-      this.setState({finalError: "¡Cambia las Estaciones!"})
-      event.preventDefault();
+    this.componentDidMount();
+
+
+    Alert.alert(
+      'Disfruta tu viaje, tu bicicleta es:',
+      'Serial No.: ' + 123,
+      [
+        {
+          text: 'Aceptar',
+        }
+      ]
+    )  
+  }  
+  componentDidMount() {
+    
+    const origen = this.state.estacion_origen;
+    const final = this.state.estacion_destino;
+    const disponibles = this.state.bicicletasOrigen
+    if (origen === final) {
+      this.setState({ finalError: "Cambia las estaciones!" })
+      
       return
     }
     if (!disponibles || disponibles.length < 1) {
       this.setState({ finalError: "No hay bicicletas disponibles en esta estación" })
-      event.preventDefault();
+      
       return
     }
-
-    var requestBici = `
-    mutation{
-      updateBicicleta(token: "${this.props.user}", serial: ${disponibles[0].serial}, 
-      bicicleta:{
-        estado: "Ocupado"
-        ubicacion: "${final}"
-      }){
-        serial
+    var request = `query {
+      userById(token: "${userToken}") {
+        name
+        lastname
+        email
+        id
       }
     }`;
 
-
-    await graphql(requestBici,
-      data => {
-        if (!data.updateBicicleta) {
-          this.setState({ finalError: "No hemos podido aparatar tu bici D=" })
-          event.preventDefault();
-        } else {
-
-        }
+    graphql(
+      request,
+      (data) => {
+        this.setState({
+          isLoading: false,
+          dataSource: data.userById,
+        })
+      },
+      (status, data) => {
       }
-    )
+    );
+    var requestBici = `query{
+      estacionByName(token: "${userToken}", name: "${origen}"){
+        
+        
+        serial
+        marca
+        estado
+      }
+    }`;
 
-    if (this.state.finalError || this.state.origenError)
-      return;
+    graphql(request,
+      data => {
+        var msg;
+        if (!data.estacionByName) {
+          msg = "No hay bicicletas disponibles en esta estación"
+        }
 
-    // Crear el prestamo
+        var bicisDisponibles = []
+        data.estacionByName.forEach(bici => {
+          if (bici.estado === "Disponible") {
+            bicisDisponibles.push(bici)
+          }
+        })
 
-    var request = `
+        if (bicisDisponibles.length < 1) {
+          msg = "No hay bicicletas disponibles en esta estación"
+        }
+
+        this.setState({ origenError: msg, bicicletasOrigen: bicisDisponibles })
+      }
+    );
+    console.log(this.state)
+
+    var bicid = 123
+
+    let requestPrestamo = `
     mutation{
-      createPrestamo(token: "${this.props.user}", prestamo: {
+      createPrestamo(token: "${userToken}", prestamo:{
         bici_id: ${disponibles[0].serial}
       }){
         id
@@ -149,22 +183,17 @@ export default class Requestbici extends React.Component {
       }
     }`;
 
-    await graphql(request,
+    graphql(requestPrestamo,
       data => {
-        if (!data.createPrestamo) {
-          this.setState({ finalError: "Algo ha salido mal con tu prestamo D=" })
-          event.preventDefault();
-        } else {
-
-        }
+        console.log("prestamo No.")
+        console.log(data.createPrestamo.id)
       }
-    )
-    if (this.state.finalError || this.state.origenError) {
-      return
-    }
-
+    );
   }
+
   render() {
+    //console.log(this.state)
+
     return (
       
     <View style={styles.container}>
@@ -183,13 +212,12 @@ export default class Requestbici extends React.Component {
         <Picker.Item label="Capilla" value="Capilla" />
         <Picker.Item label="Humanas" value="Humanas" />
       </Picker>
-  
+
       <Text style={styles.text}>Seleccione su Estación de Destino</Text>
       <Picker
         selectedValue={this.state.estacion_destino}
         style={ styles.picker}
         onValueChange={(itemValue, itemIndex) => this.setState({estacion_destino: itemValue})}>
-        
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
         <Picker.Item label="CyT" value="CyT" />
@@ -205,14 +233,13 @@ export default class Requestbici extends React.Component {
         containerStyle={{ padding: 8, height: 45, width: 150, overflow: 'hidden', borderRadius: 10, 
           borderWidth: 1, borderColor: '#fff', backgroundColor: '#06A800' }}
         disabledContainerStyle={{ backgroundColor: '#db143f' }}
-        onPress={() => this.handleSubmitChange()}
+        onPress={() => this._handlePressR()}
         >Solicitar Bici
       </Button>
     </View>
     );
   }
 }
-
 
 const styles = StyleSheet.create({
 
