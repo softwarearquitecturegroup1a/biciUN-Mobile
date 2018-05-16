@@ -4,7 +4,6 @@ import Request_icon from '../components/Request_icon';
 import graphql from '../utils/graphQLUtils';
 import Button from 'react-native-button';
 
-
 export default class Requestbici extends React.Component {
 
   constructor(props){
@@ -50,7 +49,8 @@ export default class Requestbici extends React.Component {
   }
 
   onValueChangeOrigen(itemValue, itemIndex){
-    const origen = event.target.value
+    //const origen = event.target.value
+    const origen = itemValue
     var request = `
     {
       estacionByName(token: "${this.props.user}", name: "${origen}"){
@@ -82,9 +82,10 @@ export default class Requestbici extends React.Component {
       }
     );
   }
-  onValueChangeDestino(itemValue, itemIndex){
-    this.setState({final: event.target.value});
-  }
+
+//  onValueChangeDestino(itemValue, itemIndex){
+  //  this.setState({final: this.state.final});
+  //}
   async handleSubmitChange(event){
     event.preventDefault();
     const origen = this.state.origen;
@@ -162,10 +163,10 @@ export default class Requestbici extends React.Component {
       <Request_icon/>
       <Text style={styles.text}>Seleccione su Estación de Inicio</Text>
       <Picker 
-        selectedValue={this.state.estacion_origen}
+        selectedValue={this.state.origen}
         style={styles.picker}
         underlineColorAndroid='rgba(0,0,0,0)'
-        onValueChangeOrigen={(itemValue, itemIndex) => this.setState({estacion_origen: itemValue})} >
+        onValueChangeOrigen={(itemValue, itemIndex) => this.setState({origen: itemValue})} >
         
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
@@ -177,9 +178,9 @@ export default class Requestbici extends React.Component {
   
       <Text style={styles.text}>Seleccione su Estación de Destino</Text>
       <Picker
-        selectedValue={this.state.estacion_destino}
+        selectedValue={this.state.final}
         style={ styles.picker}
-        onValueChangeDestino={(itemValue, itemIndex) => this.setState({estacion_destino: itemValue})}>
+        onValueChangeDestino={(itemValue, itemIndex) => this.setState({final: itemValue})}>
         
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />

@@ -1,4 +1,3 @@
-// Importaciones
 import React from 'react';
 import { StyleSheet, Text, View, Picker, Alert, AsyncStorage} from 'react-native';
 import Request_icon from '../components/Request_icon';
@@ -10,8 +9,8 @@ export default class Requestbici extends React.Component {
   constructor(props, context) {
     super(props, context);
       this.state = {
-        estacion_origen:"CyT",
-        estacion_destino:"Uriel",
+        origen:"CyT",
+        final:"Uriel",
         isDisabled: false,
         user: 105426021,
         origenError: '',
@@ -53,11 +52,11 @@ export default class Requestbici extends React.Component {
   }
 
    _handlePressR(event) {
-     //this.requestbici();
-     console.log('Boton Solicitar bici, funcionando');  
+    //this.requestbici();
+    console.log('Boton Solicitar bici, funcionando');  
     //    console.log("paso "+bicid);   
-    //const origen = this.state.estacion_origen;
-    const origen = event.target.value
+    //const origen = this.state.origen;
+    const origen = this.state.origen
 
     var request = `
     {
@@ -105,8 +104,8 @@ export default class Requestbici extends React.Component {
   }  
   componentDidMount() {
     
-    const origen = this.state.estacion_origen;
-    const final = this.state.estacion_destino;
+    const origen = this.state.origen;
+    const final = this.state.final;
     const disponibles = this.state.bicicletasOrigen
     if (origen === final) {
       this.setState({ finalError: "Cambia las estaciones!" })
@@ -193,17 +192,15 @@ export default class Requestbici extends React.Component {
 
   render() {
     //console.log(this.state)
-
     return (
-      
     <View style={styles.container}>
       <Request_icon/>
       <Text style={styles.text}>Seleccione su Estación de Inicio</Text>
       <Picker 
-        selectedValue={this.state.estacion_origen}
+        selectedValue={this.state.origen}
         style={styles.picker}
         underlineColorAndroid='rgba(0,0,0,0)'
-        onValueChange={(itemValue, itemIndex) => this.setState({estacion_origen: itemValue})} >
+        onValueChange={(itemValue, itemIndex) => this.setState({origen: itemValue})} >
         
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
@@ -215,9 +212,9 @@ export default class Requestbici extends React.Component {
 
       <Text style={styles.text}>Seleccione su Estación de Destino</Text>
       <Picker
-        selectedValue={this.state.estacion_destino}
+        selectedValue={this.state.final}
         style={ styles.picker}
-        onValueChange={(itemValue, itemIndex) => this.setState({estacion_destino: itemValue})}>
+        onValueChange={(itemValue, itemIndex) => this.setState({final: itemValue})}>
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
         <Picker.Item label="CyT" value="CyT" />
