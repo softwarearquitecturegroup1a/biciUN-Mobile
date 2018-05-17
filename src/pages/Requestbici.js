@@ -57,6 +57,8 @@ export default class Requestbici extends React.Component {
     //    console.log("paso "+bicid);   
     //const origen = this.state.origen;
     const origen = this.state.origen
+    console.log("origen dentro de handlePressR")
+    console.log(origen)
 
     var request = `
     {
@@ -90,7 +92,6 @@ export default class Requestbici extends React.Component {
     );
 
     this.componentDidMount();
-
 
     Alert.alert(
       'Disfruta tu viaje, tu bicicleta es:',
@@ -200,8 +201,7 @@ export default class Requestbici extends React.Component {
         selectedValue={this.state.origen}
         style={styles.picker}
         underlineColorAndroid='rgba(0,0,0,0)'
-        onValueChange={(itemValue, itemIndex) => this.setState({origen: itemValue})} >
-        
+        onValueChange={(itemValue, itemIndex) => this.setState({origen: itemValue})} >        
         <Picker.Item label="Central" value="Central" />
         <Picker.Item label="Uriel" value="Uriel" />
         <Picker.Item label="CyT" value="CyT" />
@@ -226,12 +226,10 @@ export default class Requestbici extends React.Component {
       <Button
         style={{ flex: 3,fontSize: 18, color: 'white' }}
         styleDisabled={{ color: 'white' }}
-        
         containerStyle={{ padding: 8, height: 45, width: 150, overflow: 'hidden', borderRadius: 10, 
           borderWidth: 1, borderColor: '#fff', backgroundColor: '#06A800' }}
         disabledContainerStyle={{ backgroundColor: '#db143f' }}
-        onPress={() => this._handlePressR()}
-        >Solicitar Bici
+        onPress={() => this._handlePressR()}>Solicitar Bici
       </Button>
     </View>
     );
