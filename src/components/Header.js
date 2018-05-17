@@ -4,52 +4,56 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import graphql from '../utils/graphQLUtils';
 
 
+
+global.userToken = "InrHZA4SgT";
+
 export default class Header extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: true,
-        }
-    }
+  constructor(props) {
+    super(props);
+      this.state = {
+        isLoading: true,
+      }
+  }
 
-    componentDidMount() {
-        let request = `query {
-                          userById(token: "${userToken}") {
-                            name
-                            lastname
-                            email
-                            id
-                          }
-                        }`;
+  componentDidMount() {
+    var request = `query {
+      userById(token: "${userToken}") {
+        name
+        lastname
+        email
+        id
+      }
+    }`;
 
-        let requestPhoto = `query {
-                          profilePictureById(id: "${global.userId}") {
-                            Url
-                          }
-                        }`;
+    graphql(
+      request,
+      (data) => {
+        this.setState({
+          isLoading: false,
+          dataSource: data.userById,
+        })
+      },
+      (status, data) => {
+      }
+    );
+    
+  }
 
-        graphql(
-            request,
-            (data) => {
-                this.setState({
-                    isLoading: false,
-                    dataSource: data.userById,
-                })
-            },
-            (status, data) => {
-            }
-        );
-        graphql(
-            requestPhoto,
-            (data) => {
-                this.setState({
-                    photoUrl: data.profilePictureById.Url,
-                })
-            },
-            (status, data) => {
-            }
-        );
+
+  render() {
+
+    console.log(this.state);
+
+    if(this.state.isLoading){
+      return(
+
+      <View style={styles.header}>
+        <Text style={styles.lastname}>Cargando</Text>
+      </View> 
+
+
+      ); 
     }
 
 
