@@ -40,23 +40,6 @@ export default class Header extends React.Component {
     
   }
 
-
-  render() {
-
-    console.log(this.state);
-
-    if(this.state.isLoading){
-      return(
-
-      <View style={styles.header}>
-        <Text style={styles.lastname}>Cargando</Text>
-      </View> 
-
-
-      ); 
-    }
-
-
     render() {
 
         console.log(this.state);
