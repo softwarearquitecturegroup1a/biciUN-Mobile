@@ -3,9 +3,12 @@ import { StyleSheet, Text, View, Picker, Alert, AsyncStorage} from 'react-native
 import Request_icon from '../components/Request_icon';
 import graphql from '../utils/graphQLUtils';
 import Button from 'react-native-button';
+//import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import {Actions} from 'react-native-router-flux';
 
 export default class Requestbici extends React.Component {
-
+  
   constructor(props, context) {
     super(props, context);
       this.state = {
@@ -51,18 +54,31 @@ export default class Requestbici extends React.Component {
     );
   }
 
-   _handlePressR(event) {
+  handleSubmitChange(event) {
+
+    //this.componentDidMount();
+    
+    Alert.alert(
+      'Disfruta tu viaje, tu bicicleta es:',
+      'Serial No.: ' + 123,
+      [
+        {
+          text: 'Aceptar',
+          
+        }
+      ]
+    ) 
+    
+    Actions.deliverbici();
     //this.requestbici();
     console.log('Boton Solicitar bici, funcionando');  
     //    console.log("paso "+bicid);   
     //const origen = this.state.origen;
     const origen = this.state.origen
-    console.log("origen dentro de handlePressR")
-    console.log(origen)
 
     var request = `
     {
-      estacionByName(token: "${userToken}", name: "${origen}"){
+      estacionByName(token: "${this.props.user}", name: "${origen}"){
         serial
         marca
         estado
@@ -90,92 +106,59 @@ export default class Requestbici extends React.Component {
         this.setState({ origen: origen, origenError: msg, bicicletasOrigen: bicisDisponibles })
       }
     );
-
-    this.componentDidMount();
-
-    Alert.alert(
-      'Disfruta tu viaje, tu bicicleta es:',
-      'Serial No.: ' + 123,
-      [
-        {
-          text: 'Aceptar',
-        }
-      ]
-    )  
-  }  
-  componentDidMount() {
     
-    const origen = this.state.origen;
-    const final = this.state.final;
     const disponibles = this.state.bicicletasOrigen
+    console.log(disponibles)
+    const final = this.state.final
+    console.log("origen dentro de handlePressRfunca")
+    console.log(origen)
+    console.log(final)
+
     if (origen === final) {
       this.setState({ finalError: "Cambia las estaciones!" })
-      
+      //event.preventDefault();
       return
     }
+
     if (!disponibles || disponibles.length < 1) {
       this.setState({ finalError: "No hay bicicletas disponibles en esta estación" })
-      
+      //event.preventDefault();
       return
     }
-    var request = `query {
-      userById(token: "${userToken}") {
-        name
-        lastname
-        email
-        id
-      }
-    }`;
 
-    graphql(
-      request,
-      (data) => {
-        this.setState({
-          isLoading: false,
-          dataSource: data.userById,
-        })
-      },
-      (status, data) => {
-      }
-    );
-    var requestBici = `query{
-      estacionByName(token: "${userToken}", name: "${origen}"){
-        
-        
-        serial
-        marca
-        estado
-      }
-    }`;
+    // Apartar bicicleta 
 
-    graphql(request,
-      data => {
-        var msg;
-        if (!data.estacionByName) {
-          msg = "No hay bicicletas disponibles en esta estación"
-        }
-
-        var bicisDisponibles = []
-        data.estacionByName.forEach(bici => {
-          if (bici.estado === "Disponible") {
-            bicisDisponibles.push(bici)
-          }
-        })
-
-        if (bicisDisponibles.length < 1) {
-          msg = "No hay bicicletas disponibles en esta estación"
-        }
-
-        this.setState({ origenError: msg, bicicletasOrigen: bicisDisponibles })
-      }
-    );
-    console.log(this.state)
-
-    var bicid = 123
-
-    let requestPrestamo = `
+    var requestBici = `
     mutation{
-      createPrestamo(token: "${userToken}", prestamo:{
+      updateBicicleta(token: "${this.props.user}", serial: ${disponibles[0].serial}, 
+      bicicleta:{
+        estado: "Ocupado"
+        ubicacion: "${final}"
+      }){
+        serial
+      }
+    }`;
+
+
+    graphql(requestBici,
+      data => {
+        if (!data.updateBicicleta) {
+          this.setState({ finalError: "No hemos podido aparatar tu bici D=" })
+          event.preventDefault();
+        } else {
+
+        }
+      }
+    )
+
+    if (this.state.finalError || this.state.origenError)
+      return;
+
+      // Crear el prestamo
+
+    var request = `
+    mutation{
+      createPrestamo(token: "${this.props.user}", prestamo: {
         bici_id: ${disponibles[0].serial}
       }){
         id
@@ -183,14 +166,100 @@ export default class Requestbici extends React.Component {
       }
     }`;
 
-    graphql(requestPrestamo,
+    graphql(request,
       data => {
-        console.log("prestamo No.")
-        console.log(data.createPrestamo.id)
-      }
-    );
-  }
+        if (!data.createPrestamo) {
+          this.setState({ finalError: "Algo ha salido mal con tu prestamo D=" })
+          event.preventDefault();
+        } else {
 
+        }
+      }
+    )
+    if (this.state.finalError || this.state.origenError) {
+      return
+    }
+
+      
+ 
+  }  
+/*    componentDidMount() {
+    const origen = this.state.origen
+    const disponibles = this.state.bicicletasOrigen
+    console.log(disponibles)
+    const final = this.state.final
+    console.log("origen dentro de handlePressR")
+    console.log(origen)
+    console.log(final)
+
+    if (origen === final) {
+      this.setState({ finalError: "Cambia las estaciones!" })
+      //event.preventDefault();
+      return
+    }
+
+    if (!disponibles || disponibles.length < 1) {
+      this.setState({ finalError: "No hay bicicletas disponibles en esta estación" })
+      //event.preventDefault();
+      return
+    }
+
+    // Apartar bicicleta 
+
+    var requestBici = `
+    mutation{
+      updateBicicleta(token: "${this.props.user}", serial: ${disponibles[0].serial}, 
+      bicicleta:{
+        estado: "Ocupado"
+        ubicacion: "${final}"
+      }){
+        serial
+      }
+    }`;
+
+
+    graphql(requestBici,
+      data => {
+        if (!data.updateBicicleta) {
+          this.setState({ finalError: "No hemos podido aparatar tu bici D=" })
+          event.preventDefault();
+        } else {
+
+        }
+      }
+    )
+
+    if (this.state.finalError || this.state.origenError)
+      return;
+
+      // Crear el prestamo
+
+    var request = `
+    mutation{
+      createPrestamo(token: "${this.props.user}", prestamo: {
+        bici_id: ${disponibles[0].serial}
+      }){
+        id
+        solicitud
+      }
+    }`;
+
+    graphql(request,
+      data => {
+        if (!data.createPrestamo) {
+          this.setState({ finalError: "Algo ha salido mal con tu prestamo D=" })
+          event.preventDefault();
+        } else {
+
+        }
+      }
+    )
+    if (this.state.finalError || this.state.origenError) {
+      return
+    }
+
+  } 
+ */
   render() {
     //console.log(this.state)
     return (
@@ -202,12 +271,12 @@ export default class Requestbici extends React.Component {
         style={styles.picker}
         underlineColorAndroid='rgba(0,0,0,0)'
         onValueChange={(itemValue, itemIndex) => this.setState({origen: itemValue})} >        
-        <Picker.Item label="Central" value="Central" />
-        <Picker.Item label="Uriel" value="Uriel" />
-        <Picker.Item label="CyT" value="CyT" />
+        <Picker.Item label="CyT" value="Edificio CyT" />
+        <Picker.Item label="Central" value="Biblioteca Central" />
+        <Picker.Item label="Uriel" value="Entrada Edificio Uriel Gutierrez" />
         <Picker.Item label="Estadio" value="Estadio" />
         <Picker.Item label="Capilla" value="Capilla" />
-        <Picker.Item label="Humanas" value="Humanas" />
+        <Picker.Item label="Humanas" value="Facultad de Humanas" />
       </Picker>
 
       <Text style={styles.text}>Seleccione su Estación de Destino</Text>
@@ -229,12 +298,68 @@ export default class Requestbici extends React.Component {
         containerStyle={{ padding: 8, height: 45, width: 150, overflow: 'hidden', borderRadius: 10, 
           borderWidth: 1, borderColor: '#fff', backgroundColor: '#06A800' }}
         disabledContainerStyle={{ backgroundColor: '#db143f' }}
-        onPress={() => this._handlePressR()}>Solicitar Bici
+        onPress={() => this.handleSubmitChange()}>Solicitar Bici
       </Button>
     </View>
     );
   }
 }
+
+class componentPageRequestbici extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {
+      prestamos: []
+    }
+  }
+
+  componentDidMount(){
+    
+    var request = `
+    {
+      prestamosbyUser(token: "${this.props.user}"){
+        id
+      }
+    }`;
+
+    graphql(request,
+      data => {
+        if (!data.prestamosbyUser) {
+          return;
+        }
+        this.setState({ prestamos: data.prestamosbyUser }) // Sin prestamos
+      }
+    )
+  }
+
+  render() {
+
+    if (!this.props.isAuthenticated){
+      //return <Redirect to="/" />;      
+      return Actions.home();
+    }
+    if(this.state.prestamos.length > 0){
+      //return <Redirect to="/timer" />;
+      return Actions.deliver();
+    }
+
+    return (
+    <View style={styles.container}>
+      <Request_icon/>
+        <Requestbici user={this.props.user} />
+      <Text></Text>
+    </View>
+    );
+  }
+}
+// const PageRequestbici = connect(
+//   state => ({
+//     isAuthenticated: state.authReducers.isAuthenticated,
+//     user: state.authReducers.user,
+//   })
+// )(ComponentPageRequestbici)
+
+
 
 const styles = StyleSheet.create({
 
