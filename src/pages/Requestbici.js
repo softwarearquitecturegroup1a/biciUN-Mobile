@@ -23,7 +23,7 @@ export default class Requestbici extends React.Component {
 
     var requestget = `
     {
-      estacionByName(token: "${this.props.user}", name: "${this.state.origen}"){
+      estacionByName(token: "${userToken}", name: "${this.state.origen}"){
         serial
         marca
         estado
@@ -56,29 +56,19 @@ export default class Requestbici extends React.Component {
 
   handleSubmitChange(event) {
 
-    //this.componentDidMount();
+    this.componentDidMount();
     
-    Alert.alert(
-      'Disfruta tu viaje, tu bicicleta es:',
-      'Serial No.: ' + 123,
-      [
-        {
-          text: 'Aceptar',
-          
-        }
-      ]
-    ) 
-    
-    Actions.deliverbici();
+    //    console.log(disponibles[0].serial)
+
     //this.requestbici();
     console.log('Boton Solicitar bici, funcionando');  
     //    console.log("paso "+bicid);   
     //const origen = this.state.origen;
     const origen = this.state.origen
-
+    console.log(userToken)
     var request = `
     {
-      estacionByName(token: "${this.props.user}", name: "${origen}"){
+      estacionByName(token: "${userToken}", name: "${origen}"){
         serial
         marca
         estado
@@ -107,7 +97,7 @@ export default class Requestbici extends React.Component {
       }
     );
     
-    const disponibles = this.state.bicicletasOrigen
+/*     const disponibles = this.state.bicicletasOrigen
     console.log(disponibles)
     const final = this.state.final
     console.log("origen dentro de handlePressRfunca")
@@ -130,7 +120,7 @@ export default class Requestbici extends React.Component {
 
     var requestBici = `
     mutation{
-      updateBicicleta(token: "${this.props.user}", serial: ${disponibles[0].serial}, 
+      updateBicicleta(token: "${userToken}", serial: ${disponibles[0].serial}, 
       bicicleta:{
         estado: "Ocupado"
         ubicacion: "${final}"
@@ -158,7 +148,7 @@ export default class Requestbici extends React.Component {
 
     var request = `
     mutation{
-      createPrestamo(token: "${this.props.user}", prestamo: {
+      createPrestamo(token: "${userToken}", prestamo: {
         bici_id: ${disponibles[0].serial}
       }){
         id
@@ -179,11 +169,11 @@ export default class Requestbici extends React.Component {
     if (this.state.finalError || this.state.origenError) {
       return
     }
-
       
- 
+ */ 
   }  
-/*    componentDidMount() {
+    componentDidMount() {
+  
     const origen = this.state.origen
     const disponibles = this.state.bicicletasOrigen
     console.log(disponibles)
@@ -208,7 +198,7 @@ export default class Requestbici extends React.Component {
 
     var requestBici = `
     mutation{
-      updateBicicleta(token: "${this.props.user}", serial: ${disponibles[0].serial}, 
+      updateBicicleta(token: "${userToken}", serial: ${disponibles[0].serial}, 
       bicicleta:{
         estado: "Ocupado"
         ubicacion: "${final}"
@@ -236,7 +226,7 @@ export default class Requestbici extends React.Component {
 
     var request = `
     mutation{
-      createPrestamo(token: "${this.props.user}", prestamo: {
+      createPrestamo(token: "${userToken}", prestamo: {
         bici_id: ${disponibles[0].serial}
       }){
         id
@@ -257,9 +247,20 @@ export default class Requestbici extends React.Component {
     if (this.state.finalError || this.state.origenError) {
       return
     }
+    Alert.alert(
+      'Disfruta tu viaje, tu bicicleta es:',
+      'Serial No.:' + 123 ,      
+      [
+        {
+          text: 'Aceptar',
+        }
+      ]
+    ) 
+
+    Actions.deliverbici();
 
   } 
- */
+ 
   render() {
     //console.log(this.state)
     return (
@@ -317,7 +318,7 @@ class componentPageRequestbici extends React.Component{
     
     var request = `
     {
-      prestamosbyUser(token: "${this.props.user}"){
+      prestamosbyUser(token: "${userToken}"){
         id
       }
     }`;
@@ -346,7 +347,7 @@ class componentPageRequestbici extends React.Component{
     return (
     <View style={styles.container}>
       <Request_icon/>
-        <Requestbici user={this.props.user} />
+        <Requestbici user={userToken} />
       <Text></Text>
     </View>
     );

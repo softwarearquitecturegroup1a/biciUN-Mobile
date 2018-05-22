@@ -19,7 +19,7 @@ class Deliverbici extends React.Component {
     
   }
 
-  async handleSubmit(event){
+  async handleSubmit(){
       //event.preventDefault();
 
 
@@ -29,7 +29,7 @@ class Deliverbici extends React.Component {
 
       let requestPendientes = `
       query{
-          prestamosPendientes(token: "${this.props.user}"){
+          prestamosPendientes(token: "${userToken}"){
             bici_id
             student_id
             id
@@ -57,7 +57,7 @@ class Deliverbici extends React.Component {
 
       let requestEntregar = `
       mutation{
-          entregarPrestamo(token: "${this.props.user}", id:${bicis[0].id}){
+          entregarPrestamo(token: "${userToken}", id:${bicis[0].id}){
           bici_id
           }
       }`;
@@ -105,7 +105,7 @@ class ComponentDeliverbici extends React.Component{
       if(!this.props.isAuthenticated)
         return Actions.home();
       return (
-          <Deliverbici user={this.props.user}/>
+          <Deliverbici user={userToken}/>
               
       );
     }
