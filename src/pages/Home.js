@@ -45,6 +45,9 @@ export default class Home extends React.Component {
   requestbici(){
     Actions.requestbici();
   }
+  deliverbici(){
+    Actions.deliverbici();
+  }
 
   render() {
     const { isDisabled } = this.state;
