@@ -6,7 +6,6 @@ import BiciLogo from '../components/BiciLogo';
 
 import {Actions} from 'react-native-router-flux';
 
-global.userToken = "InrHZA4SgT";
 
 export default class Home extends React.Component {
 
