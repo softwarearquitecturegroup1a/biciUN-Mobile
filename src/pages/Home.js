@@ -6,10 +6,6 @@ import BiciLogo from '../components/BiciLogo';
 
 import {Actions} from 'react-native-router-flux';
 
-var serial = 1234;
-var color = 'Verde';
-
-global.userToken = "InrHZA4SgT";
 
 export default class Home extends React.Component {
 
@@ -23,21 +19,8 @@ export default class Home extends React.Component {
 
     
   _handlePress() {
-    this.setState({
-      isDisabled: true
-    });
-
-    Alert.alert(
-      'Solicitud de Prestamo Aprobada',
-      'Serial: ' + serial + '\n' + 'Color: ' + color,
-      [
-        {
-          text: 'Aceptar',
-        }
-      ]
-    )
-
-    console.log('Boton Solicitar, desabilitado');
+    this.requestbici();
+    console.log('Boton Solicitar, funcionando');
     
   }  
 
@@ -57,6 +40,13 @@ export default class Home extends React.Component {
 
   records() {
     Actions.records();  
+  }
+
+  requestbici(){
+    Actions.requestbici();
+  }
+  deliverbici(){
+    Actions.deliverbici();
   }
 
   render() {
