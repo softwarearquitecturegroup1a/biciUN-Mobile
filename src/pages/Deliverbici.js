@@ -67,9 +67,6 @@ class Deliverbici extends React.Component {
           console.log(data.entregarPrestamo.bici_id)
           }
       );
-      
-      
-
   }
   render() {
     return (

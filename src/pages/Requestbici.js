@@ -94,83 +94,23 @@ export default class Requestbici extends React.Component {
         }
 
         this.setState({ origen: origen, origenError: msg, bicicletasOrigen: bicisDisponibles })
+        console.log(this.state.bicicletasOrigen)
       }
     );
-    
-/*     const disponibles = this.state.bicicletasOrigen
-    console.log(disponibles)
-    const final = this.state.final
-    console.log("origen dentro de handlePressRfunca")
-    console.log(origen)
-    console.log(final)
+  
+    Alert.alert(
+      'Disfruta tu viaje, tu bicicleta es:',
+      'Serial No.:' + bicicletasOrigen[0].serial  ,
 
-    if (origen === final) {
-      this.setState({ finalError: "Cambia las estaciones!" })
-      //event.preventDefault();
-      return
-    }
-
-    if (!disponibles || disponibles.length < 1) {
-      this.setState({ finalError: "No hay bicicletas disponibles en esta estación" })
-      //event.preventDefault();
-      return
-    }
-
-    // Apartar bicicleta 
-
-    var requestBici = `
-    mutation{
-      updateBicicleta(token: "${userToken}", serial: ${disponibles[0].serial}, 
-      bicicleta:{
-        estado: "Ocupado"
-        ubicacion: "${final}"
-      }){
-        serial
-      }
-    }`;
-
-
-    graphql(requestBici,
-      data => {
-        if (!data.updateBicicleta) {
-          this.setState({ finalError: "No hemos podido aparatar tu bici D=" })
-          event.preventDefault();
-        } else {
-
+      [
+        {
+          text: 'Aceptar',
         }
-      }
-    )
+      ]
+    ) 
 
-    if (this.state.finalError || this.state.origenError)
-      return;
-
-      // Crear el prestamo
-
-    var request = `
-    mutation{
-      createPrestamo(token: "${userToken}", prestamo: {
-        bici_id: ${disponibles[0].serial}
-      }){
-        id
-        solicitud
-      }
-    }`;
-
-    graphql(request,
-      data => {
-        if (!data.createPrestamo) {
-          this.setState({ finalError: "Algo ha salido mal con tu prestamo D=" })
-          event.preventDefault();
-        } else {
-
-        }
-      }
-    )
-    if (this.state.finalError || this.state.origenError) {
-      return
-    }
-      
- */ 
+    Actions.deliverbici();
+  
   }  
     componentDidMount() {
   
@@ -247,17 +187,6 @@ export default class Requestbici extends React.Component {
     if (this.state.finalError || this.state.origenError) {
       return
     }
-    Alert.alert(
-      'Disfruta tu viaje, tu bicicleta es:',
-      'Serial No.:' + 123 ,      
-      [
-        {
-          text: 'Aceptar',
-        }
-      ]
-    ) 
-
-    Actions.deliverbici();
 
   } 
  
