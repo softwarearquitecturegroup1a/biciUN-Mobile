@@ -98,16 +98,16 @@ class Prestamo extends React.Component {
 const styles = StyleSheet.create({
 
     container: {
-        backgroundColor: "#e6e6e6",
-        flex: 1,
+        backgroundColor: "#3949ab",
+        flexGrow: 1,
         alignItems: "center",
         justifyContent: "center",
     },
 
     text: {
-        color: "#3949ab",
-        fontSize: 30,
-        marginVertical: 20,
+        color: "#fff",
+        fontSize: 17,
+        marginVertical: 8,
     },
     item: {
         padding: 10,
